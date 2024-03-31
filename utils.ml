@@ -77,3 +77,18 @@ let rec lookup key l =
   | (k,v)::t ->
     if k = key then v 
     else lookup key t
+
+(*Custom insert and sort*)
+
+let rec cinsert f x l =
+  match l with
+  [] -> [x]
+  | h::t ->
+    if f x h
+      then x::h::t
+  else h:: cinsert f x t
+
+let rec csort f l =
+  match l with
+  [] -> []
+  | h::t -> cinsert f h (csort f t)
