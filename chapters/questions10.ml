@@ -45,3 +45,41 @@ let rect_comp a b =
 let pack rects =
  csort rect_comp (map stand rects)
  
+
+ (*Question 5*)
+
+ type 'a sequence = Nil | Cons of 'a * 'a sequence
+
+ let rec seq_length s = 
+  match s with
+    Nil -> 0
+  | Cons (_, t) -> 1 + seq_length t
+
+let rec seq_append a b =
+  match a with
+  Nil -> b
+  | Cons (h, t) -> Cons(h, seq_append t b)
+
+let rec seq_take n seq =
+  match seq with
+  Nil ->
+    if n = 0 then Nil
+    else raise (Invalid_argument "seq_take")
+  | Cons (h,t) ->
+    if n < 0 then raise (Invalid_argument "seq_take") else
+    if n = 0 then Nil else Cons(h, (seq_take (n-1) t)) 
+
+
+let test_seq = Cons(4, Cons(34, Cons(2343,Nil)))
+
+
+let req seq_drop n seq =
+  if n = 0 then seq else
+    match seq with
+    Nil -> raise(Invalid_argument "seq_drop")
+    | Cons(_, seq) -> seq_drop (n-1) seq
+
+let rec seq_map f seq =
+  match seq with
+  Nil -> Nil
+  | Cons (h,t) -> Cons(f h, seq_map f t)
